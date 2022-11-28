@@ -106,20 +106,22 @@ function timeSpanToString(startDate, endDate) {
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-function angleBetweenClockHands(date) {
-  const hour = date.getHours();
-  const minutes = date.getMinutes();
-  const angleMinutes = minutes * 6;
-  const angleHour = hour * 30 + minutes * 0.5;
-
-  const angry = Math.abs(angleHour - angleMinutes);
-
-
-  const pzdc = (Math.min(360 - angry, angry));
-
-  return pzdc;
-  // return (pzdc * Math.PI) / 180;
+function angleBetweenClockHands(/* date */) {
+  throw new Error('Not implemented');
 }
+
+// const hour = date.getHours();
+// const minutes = date.getMinutes();
+// const angleMinutes = minutes * 6;
+// const angleHour = hour * 30 + minutes * 0.5;
+
+// const angry = Math.abs(angleHour - angleMinutes);
+
+
+// const pzdc = (Math.min(360 - angry, angry));
+
+// return pzdc;
+// // return (pzdc * Math.PI) / 180;
 
 
 module.exports = {
