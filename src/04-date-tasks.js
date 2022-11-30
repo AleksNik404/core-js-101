@@ -6,7 +6,6 @@
  *                                                                                           *
  ******************************************************************************************* */
 
-
 /**
  * Parses a rfc2822 string date representation into date value
  * For rfc2822 date specification refer to : http://tools.ietf.org/html/rfc2822#page-14
@@ -38,7 +37,6 @@ function parseDataFromIso8601(value) {
   return new Date(value);
 }
 
-
 /**
  * Returns true if specified date is leap year and false otherwise
  * Please find algorithm here: https://en.wikipedia.org/wiki/Leap_year#Algorithm
@@ -61,7 +59,6 @@ function isLeapYear(date) {
 
   return !(year % 400);
 }
-
 
 /**
  * Returns the string representation of the timespan between two dates.
@@ -89,11 +86,8 @@ function timeSpanToString(startDate, endDate) {
   return `${pad(HH)}:${pad(mm)}:${pad(ss)}.${String(sss).padStart(3, '0')}`;
 }
 
-
 /**
- * Returns the angle (in radians) between the hands of an analog clock
- * for the specified Greenwich time.
- * If you have problem with solution please read: https://en.wikipedia.org/wiki/Clock_angle_problem
+ * Returns the angle (in radians) between the hands of an analog clock for the specified Greenwich time. If you have problem with solution please read: https://en.wikipedia.org/wiki/Clock_angle_problem
  *
  * SMALL TIP: convert to radians just once, before return in order to not lost precision
  *
@@ -106,23 +100,17 @@ function timeSpanToString(startDate, endDate) {
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-function angleBetweenClockHands(/* date */) {
-  throw new Error('Not implemented');
+function angleBetweenClockHands(date) {
+  const hour = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+  const angleMinutes = minutes * 6;
+  const angleHour = (hour % 12) * 30 + minutes * 0.5;
+
+  const angle = Math.abs(angleHour - angleMinutes);
+  const minAngle = Math.min(360 - angle, angle);
+
+  return (Math.PI / 180) * (minAngle);
 }
-
-// const hour = date.getHours();
-// const minutes = date.getMinutes();
-// const angleMinutes = minutes * 6;
-// const angleHour = hour * 30 + minutes * 0.5;
-
-// const angry = Math.abs(angleHour - angleMinutes);
-
-
-// const pzdc = (Math.min(360 - angry, angry));
-
-// return pzdc;
-// // return (pzdc * Math.PI) / 180;
-
 
 module.exports = {
   parseDataFromRfc2822,
