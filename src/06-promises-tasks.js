@@ -83,8 +83,8 @@ function getFastestPromise(array) {
 }
 
 /**
- * Return Promise object that should be resolved with value that is
- * a result of action with values of all the promises that exists in array.
+ * Return Promise object that should be resolved with value that is a result of action with values
+ * of all the promises that exists in array.
  * If some of promise is rejected you should catch it and process the next one.
  *
  * @param {Promise[]} array
@@ -99,8 +99,13 @@ function getFastestPromise(array) {
  *    });
  *
  */
-function chainPromises(/* array, action */) {
-  throw new Error('Not implemented');
+function chainPromises(array, action) {
+  const newArr = [];
+
+  return new Promise((res) => {
+    array.forEach((el) => el.then((data) => newArr.push(data)).catch(() => {}));
+    res();
+  }).then(() => newArr.reduce((acc, el) => action(acc, el)));
 }
 
 module.exports = {
