@@ -127,7 +127,6 @@ function doRectanglesOverlap(rect1, rect2) {
   let overlap = false;
   if (rect2.top - rect1.top < rect1.height && rect2.left - rect1.left < rect1.width) overlap = true;
 
-
   return overlap;
 }
 
@@ -276,8 +275,20 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const cnnArr = String(ccn).split('').slice(0, -1);
+  const lastNumber = String(ccn).at(-1);
+
+  const finalSum = cnnArr.reduceRight((acc, el, index, arr) => {
+    const reverseIndex = arr.length - (index + 2);
+    let num = reverseIndex % 2 ? el * 2 : el;
+
+    if (num > 9) num = Number(String(num)[0]) + Number(String(num)[1]);
+
+    return acc + Number(num);
+  }, 0);
+
+  return !((finalSum + Number(lastNumber)) % 10);
 }
 
 /**
@@ -322,8 +333,24 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const brakets = {
+    '[': ']',
+    '{': '}',
+    '(': ')',
+    '<': '>',
+  };
+  const braketsStack = [];
+
+  for (let i = 0; i < str.length; i += 1) {
+    if (str[i] in brakets) braketsStack.push(str[i]);
+    else {
+      const lastOpenBraket = braketsStack.pop();
+      if (brakets[lastOpenBraket] !== str[i]) return false;
+    }
+  }
+
+  return !braketsStack.length;
 }
 
 
@@ -364,8 +391,20 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const maxLength = Math.min(...pathes.map((el) => el.length));
+  const newPathse = pathes.map((el) => el.split('/'));
+
+  let generalPath = '';
+
+  for (let i = 0; i < maxLength; i += 1) {
+    const isAllSame = newPathse.every((el) => el[i] === newPathse[0][i]);
+    if (!isAllSame) return generalPath;
+
+    generalPath += `${newPathse[0][i]}/`;
+  }
+
+  return generalPath;
 }
 
 
@@ -391,7 +430,9 @@ function getMatrixProduct(/* m1, m2 */) {
   throw new Error('Not implemented');
 }
 
-
+// return m1
+//     .map((row, i) => m2[0]
+//       .map((_, j) => row.reduce((acc, l, n) => acc + m1[i][n] * m2[n][j], 0)));
 /**
  * Returns the evaluation of the specified tic-tac-toe position.
  * See the details: https://en.wikipedia.org/wiki/Tic-tac-toe
